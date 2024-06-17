@@ -1,0 +1,128 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
+<html lang="en">
+<jsp:include page="head.jsp"/>
+<body>
+<jsp:include page="nav.jsp"/>
+    <div class="container">
+      <div class="main_contents">
+    <div id="sub_content">
+        <form action="add_student" method="post" enctype="multipart/form-data">
+            <h2 class="col-md-6 offset-md-2 mb-5 mt-4">Student Registration</h2>
+            <div class="row mb-4">
+                <div class="col-md-2"></div>
+                <label for="name" class="col-md-2 col-form-label">Name</label>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" id="name" value="${student.name}" name="name" required>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-2"></div>
+                <label for="dob" class="col-md-2 col-form-label">DOB</label>
+                <div class="col-md-4">
+                    <input type="date" class="form-control" id="dob" name="dob" value="${student.dob}" required>
+                </div>
+            </div>
+            <fieldset class="row mb-4">
+                <div class="col-md-2"></div>
+                <legend class="col-form-label col-md-2 pt-0">Gender</legend>
+                <div class="col-md-4">
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="radio" name="gender" id="gridRadios1" value="1"
+                             <c:if test="${student.gender==1}">checked</c:if>>
+                        <label class="form-check-label" for="gridRadios1">
+                            Male
+                        </label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="radio" name="gender" id="gridRadios2" value="0" <c:if test="${student.gender==0 || student==null}">checked</c:if>>
+                        <label class="form-check-label" for="gridRadios2">
+                            Female
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="row mb-4">
+                <div class="col-md-2"></div>
+                <label for="phone" class="col-md-2 col-form-label">Phone</label>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" id="phone" oninput="onlyNumber(this)" name="phone" required value="${student.phone}">
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-2"></div>
+                <label for="education" class="col-md-2 col-form-label">Education</label>
+                <div class="col-md-4">
+                    <select class="form-select" aria-label="Education" id="education" name="education" required>
+                       <option value="1" <c:if test="${student.education==1}">selected</c:if>>Bachelor of Information Technology</option>
+                        <option value="2" <c:if test="${student.education==2}">selected</c:if>>Diploma in IT</option>
+                      	<option value="3" <c:if test="${student.education==3}">selected</c:if>>Bachelor of Computer Science</option>      
+                    </select>
+                </div>
+            </div>
+            <fieldset class="row mb-4">
+                        <div class="col-md-2"></div>
+                        <legend class="col-form-label col-md-2 pt-0">Attend</legend>
+                        <div class="col-md-4">
+                            <c:forEach items="${courses}" var="course">
+                                <div class="form-check-inline col-md-5">
+                                    <input class="form-check-input" type="checkbox" name="courseIds" id="gridCheck${course.id}" value="${course.id}" >
+                                    <label class="form-check-label" for="gridCheck${course.id}" >${course.name}</label>
+                                </div>
+                            </c:forEach>
+                            <div id="attendError" class="text-danger">${error}</div>
+                        </div>
+                    </fieldset>
+            <div class="row mb-4">
+                <div class="col-md-2"></div>
+                <label for="name" class="col-md-2 col-form-label">Photo</label>
+                <div class="col-md-4">
+                	<input type="file" name="image" class="form-control" required accept="image/*" id="imageInput">
+                	<div class="image-preview" id="imagePreview">
+        <img src="" alt="Image Preview" id="imagePreviewImg" style="display: none;">
+        <span id="noImageText">No image selected</span>
+    </div>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-4"></div>
+    
+                <div class="col-md-4">
+                    <button type="reset" class="btn btn-danger ">
+                        Reset
+                    </button>
+                    <button type="submit" class="btn btn-secondary col-md-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Add
+                    </button>
+                </div>
+            </div>
+            </form>
+    </div>
+</div>
+</div>
+        <div id="testfooter">
+            <span>Copyright &#169; ACE Inspiration 2022</span>
+        </div>
+        <script>
+        document.getElementById('imageInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const image = document.getElementById('imagePreviewImg');
+                    image.src = e.target.result;
+                    image.style.display = 'block';
+                    document.getElementById('noImageText').style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                document.getElementById('imagePreviewImg').style.display = 'none';
+                document.getElementById('noImageText').style.display = 'block';
+            }
+        });
+        </script>
+</body>
+</html>
+
